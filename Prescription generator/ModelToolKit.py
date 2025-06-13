@@ -1,5 +1,4 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
-import pandas as pd
 from torch.utils.data import Dataset
 from transformers import Trainer, TrainingArguments
 import re
@@ -24,8 +23,12 @@ class GenerateModel():
         self.doctor_id = doctor_id
         print('Loading Locutusque gpt2 medical base model....')
         model_name = "Locutusque/gpt2-large-medical"
+        
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(model_name)
+        #since gpt 2 models like locutusque, do not have a pad token and for training we need one
+        self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+        self.model.resize_token_embeddings(len(self.tokenizer))
         
     def generate(self):
         self.model.save_pretrained(f'./personalised/{self.doctor_id}')
@@ -51,8 +54,7 @@ class FineTuneModel():
     def __init__(self,doctor_id,symp,presc):
         self.doctor_id = doctor_id
         (self.tokenizer, self.model) = LoadModel(doctor_id).load()
-        #since gpt 2 models like locutusque, do not have a pad token and for training we need one
-        self.tokenizer.pad_token = self.tokenizer.eos_token
+        
         print('updating preferences...')
         self.symp = symp
         self.presc = presc

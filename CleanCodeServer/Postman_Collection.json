@@ -1,0 +1,35 @@
+
+{
+  "info": {
+    "name": "CarePointAI API",
+    "_postman_id": "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5p6",
+    "description": "API for generating AI prescription from symptoms",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Generate Prescription",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"symptoms\": [\"fever\", \"cough\", \"headache\"]\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/prescribe/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "8000",
+          "path": ["api", "prescribe"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

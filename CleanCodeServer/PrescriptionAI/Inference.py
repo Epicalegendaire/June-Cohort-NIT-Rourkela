@@ -13,16 +13,16 @@ load.train()
 exit()
 '''
 
-
-doctor_id = 101
-
-ModelToolKit.GenerateModel(doctor_id).generate()
-
-
+'''
 (tokenizer, model) = ModelToolKit.LoadModel(doctor_id).load()
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
+
+'''
+doctor_id = 101
+
+
 
 #optimised presets
 def generate_medical_response(prompt, max_new_tokens=30):
@@ -48,11 +48,11 @@ def generate_medical_response(prompt, max_new_tokens=30):
 
     return tokenizer.decode(output_ids[0], skip_special_tokens=True)
 
-symp = 'chest pain and shortness of breath'
+symp = 'Vomiting, inflamation, cough'
 
 query = f"Symptoms: {symp}. Prescriptions only:"
 
 
-print(generate_medical_response(query))
+#print(generate_medical_response(query))
 
 

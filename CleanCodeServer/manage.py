@@ -1,13 +1,14 @@
+
 #!/usr/bin/env python
 import os
 import sys
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'doctor_dashboard.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CarePointAI.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
-        raise ImportError("Couldn't import Django.") from exc
+        raise ImportError('Django not found') from exc
     execute_from_command_line(sys.argv)
 
 if __name__ == '__main__':

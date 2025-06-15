@@ -3,12 +3,12 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 # Keep track of doctor-specific models
 model_registry = {}
 
-def load_doctor_model(doctor_id, model_name='./base-Locutusque-medical'):
+def load_doctor_model(doctor_id):
     """
     Load model/tokenizer/pipeline for the given doctor ID.
     """
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained('./base-Locutusque-medical')
+    model = AutoModelForCausalLM.from_pretrained('./base-Locutusque-medical')
     pipe = pipeline("prescription-generation", model=model, tokenizer=tokenizer)
 
     model_registry[doctor_id] = pipe

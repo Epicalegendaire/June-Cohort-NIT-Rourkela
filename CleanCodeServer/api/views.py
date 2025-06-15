@@ -6,13 +6,12 @@ from .model_loader import load_doctor_model, get_model_for_doctor
 @api_view(["POST"])
 def load_model(request):
     doctor_id = request.data.get("doctor_id")
-    model_name = request.data.get("model_name", "gpt2")
 
     if not doctor_id:
         return Response({"error": "doctor_id is required"}, status=400)
 
     try:
-        msg = load_doctor_model(doctor_id, model_name)
+        msg = load_doctor_model(doctor_id)
         return Response({"message": msg})
     except Exception as e:
         return Response({"error": str(e)}, status=500)

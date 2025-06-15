@@ -7,8 +7,11 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments,
 from peft import prepare_model_for_kbit_training, LoraConfig, get_peft_model
 import torch
 from peft import PeftModel
+import os
 
 
+os.environ["WANDB_DISABLED"] = "true" #no external model weights tracking
+ 
 '''
 -each doctor will have their own model, so save model weights locally
 -fine tune on new diagnosis and symptoms
@@ -66,26 +69,45 @@ class GenerateModel():
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name)
         tokenizer.add_special_tokens({'pad_token': '[PAD]'})
-        model.resize_token_embeddings(len(self.tokenizer))
+        model.resize_token_embeddings(len(tokenizer))
         model.save_pretrained('./base-Locutusque-medical')
         tokenizer.save_pretrained("./base-Locutusque-medical")
 
+
+
+    def model_exists_locally(self, path: str):
+        required_files = ["config.json","tokenizer.json"]  # minimal
+        if not os.path.isdir(path):
+            return False
+        return all(os.path.exists(os.path.join(path, f)) for f in required_files)
+
+   
     def generate(self,doctor_id):
-        try:
 
             #if base locutuque medical exists, otherwise download
+        if self.model_exists_locally('./base-Locutusque-medical'):
             tokenizer = AutoTokenizer.from_pretrained('./base-Locutusque-medical')
             model = AutoModelForCausalLM.from_pretrained('./base-Locutusque-medical',quantization_config =self.qt.bnb_config,device_map = "auto")
             model = prepare_model_for_kbit_training(model)
             model = get_peft_model(model, self.qt.lora_config)
-            #basic finetuning
+                #basic finetuning
             symp = 'Cold, Runny Nose, Sneezing'
             presc = 'Cetcip-L, Sinarest'
-            FineTuneModel(model,tokenizer,doctor_id,symp=symp,presc=presc)
-            #we also have to generate the lora adapter, for the first time
-        except:
+            tuning = FineTuneModel(model,tokenizer,doctor_id,symp=symp,presc=presc)
+            tuning.train()
+                #we also have to generate the lora adapter, for the first time
+
+            '''
             print('Base Model does not exist or is corrupted, generating a new model.')
             self.download_base()
+            '''
+        else:
+            print('Base Model does not exist or is corrupted, generating a new model.')
+            self.download_base()
+            
+        
+
+        
     
 
 class TrainDataset(Dataset):
@@ -116,15 +138,11 @@ class FineTuneModel():
 
         self.training_args = TrainingArguments(
             output_dir=f"./personalised/{doctor_id}",
-            evaluation_strategy="no",
             num_train_epochs=3,
             per_device_train_batch_size=1,
             logging_dir="./logs",
-            save_strategy="epoch",
-            save_total_limit=2,
             learning_rate=5e-5,
             fp16=False,
-            push_to_hub=False
         )
 
         self.add_new_tokens()

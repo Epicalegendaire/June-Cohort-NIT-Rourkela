@@ -7,20 +7,23 @@ import ModelToolKit
 
 '''
 
-''' test out the fine tuning feature
-load = ModelToolKit.FineTuneModel(doctor_id=101,symp='Fever, Headache, Body Pain',presc='Dolo 650, Flexon')
-load.train()
-exit()
-'''
-
-'''
-(tokenizer, model) = ModelToolKit.LoadModel(doctor_id).load()
-
-
-
-'''
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+'''
+from ModelToolKit import GenerateModel
+load = GenerateModel()
+load.generate(101)
+'''
+
+'''
+from ModelToolKit import LoadModel
+from Inference import Infer
+load = LoadModel(101)
+
+(tokenizer, model)= load.load()
+pipeline = Infer(tokenizer,model)
+print(pipeline.generate_medical_response("Symptoms: Cold, Runny Nose, Sneezing. Prescriptions only:"))
+
+'''
 
 class Infer():
     def __init__(self,tokenizer,model):

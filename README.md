@@ -14,9 +14,6 @@ Doctors are overworked, and are constantly bombarded with multiple cases that ra
 
 ## Objective
 
-- Build a Website
-- Integrate Text to Speech
-- AI assistant
 
 ## WEBSITE
 

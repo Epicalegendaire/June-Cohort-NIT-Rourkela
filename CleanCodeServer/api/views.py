@@ -2,6 +2,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .model_loader import load_doctor_model, get_model_for_doctor
+from PrescriptionAI.Inference import Infer
 
 @api_view(["POST"])
 def load_model(request):
@@ -24,10 +25,13 @@ def generate_prescription(request):
     if not doctor_id or not symptoms:
         return Response({"error": "doctor_id and symptoms are required"}, status=400)
 
-    pipe = get_model_for_doctor(doctor_id)
-    if pipe is None:
+    (tokenizer,model) = get_model_for_doctor(doctor_id)
+    if model is None or tokenizer is None:
         return Response({"error": f"No model loaded for doctor {doctor_id}"}, status=404)
+    
+   
 
-    prompt = "Patient reports: " + ", ".join(symptoms) + ". Prescribe appropriate medicine."
-    result = pipe(prompt, max_length=100, num_return_sequences=1)
-    return Response({"prescription": result[0]['generated_text']})
+    query = f"Symptoms: {symptoms}. Prescriptions only:"
+    result = Infer(tokenizer,model).generate_medical_response(query)
+
+    return Response({"prescription": result})

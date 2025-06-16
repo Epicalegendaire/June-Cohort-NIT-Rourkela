@@ -1,8 +1,8 @@
 
 from django.urls import path
-from .views import generate_prescription, load_model
+from .views import load_model, generate_prescription
 
 urlpatterns = [
-    path('prescribe/', generate_prescription, name='generate_prescription'),
-    path('load_model/', load_model),
+    path('load-model/', load_model),
+    path('prescribe/', generate_prescription),
 ]

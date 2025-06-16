@@ -26,12 +26,18 @@ def generate_prescription(request):
         return Response({"error": "doctor_id and symptoms are required"}, status=400)
 
     (tokenizer,model) = get_model_for_doctor(doctor_id)
-    if model is None or tokenizer is None:
-        return Response({"error": f"No model loaded for doctor {doctor_id}"}, status=404)
+    
+    if not model or not tokenizer:
+        return Response({"error": f"Model not loaded for doctor_id {doctor_id}"}, status=404)
     
    
-
-    query = f"Symptoms: {symptoms}. Prescriptions only:"
-    result = Infer(tokenizer,model).generate_medical_response(query)
-
+    symptom_text = ', '.join(symptoms) if isinstance(symptoms, list) else symptoms
+    #incase symptoms is passed on as a list
+    query = f"Symptoms: {symptom_text}. Prescriptions only:"
+    
+    try:
+        result = Infer(tokenizer, model).generate_medical_response(query)
+    except Exception as e:
+        return Response({"error": f"Inference failed: {str(e)}"}, status=500)
+        
     return Response({"prescription": result})

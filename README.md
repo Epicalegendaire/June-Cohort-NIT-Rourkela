@@ -62,11 +62,12 @@ Then visit: http://127.0.0.1:8000/
 
 ## 🧠 How It Works
 
-1. The user enters symptoms in the dashboard.
-2. The frontend sends this data to the Django backend via AJAX.
-3. The backend loads the appropriate LLM model for the doctor/user.
-4. The LLM generates a prescription recommendation.
-5. The result is dynamically rendered on the same page using JavaScript.
+1. Log in through Authenticate portal, then register as a doctor.
+2. The user enters symptoms in the dashboard.
+3. The frontend sends this data to the Django backend via AJAX.
+4. The backend loads the appropriate LLM model for the doctor/user.
+5. The LLM generates a prescription recommendation.
+6. The result is dynamically rendered on the same page using JavaScript.
 
 ---
 

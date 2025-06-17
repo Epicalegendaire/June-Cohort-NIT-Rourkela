@@ -76,6 +76,8 @@ Then visit: http://127.0.0.1:8000/
 - **Real-time AJAX-based prescription generation**
 - **Custom notifications via Bootstrap Notify**
 - **Support for doctor-specific models**
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/f7b2e787-17db-41b6-a1fd-392a18df6df5" />
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/dc0b9ed7-6e25-47bd-b92a-2d3c6adf7eec" />
 
 ---
 
@@ -85,7 +87,6 @@ Then visit: http://127.0.0.1:8000/
 This project builds on the [Black Dashboard by Creative Tim](https://www.creative-tim.com/product/black-dashboard), used under its respective license.
 
 ---
-
 ## 🤝 Credits
 
 - [Creative Tim](https://www.creative-tim.com/) – UI Design

@@ -44,8 +44,9 @@ class LoadModel():
 
     def load(self):
         checker = GenerateModel()
+        print('checking for model...')
         if checker.model_exists_locally(f"./personalised/{self.doctor_id}"):
-
+            print('model exists!')
             tokenizer = AutoTokenizer.from_pretrained(f"./personalised/{self.doctor_id}")
             model = AutoModelForCausalLM.from_pretrained('./base-Locutusque-medical',quantization_config =self.bnb_config,device_map = "auto")
             model = prepare_model_for_kbit_training(model)
@@ -55,6 +56,7 @@ class LoadModel():
             pmodel = PeftModel.from_pretrained(model, f"./personalised/{self.doctor_id}")
             return (tokenizer, pmodel)
         else:
+            print('model doesnt exist')
             return (None,None)
     
 
@@ -80,7 +82,7 @@ class GenerateModel():
 
 
     def model_exists_locally(self, path: str):
-        required_files = ["config.json","tokenizer.json"]  # minimal
+        required_files = ["tokenizer.json"]  # minimal
         if not os.path.isdir(path):
             return False
         return all(os.path.exists(os.path.join(path, f)) for f in required_files)

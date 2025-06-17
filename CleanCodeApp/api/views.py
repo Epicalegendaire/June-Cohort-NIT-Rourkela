@@ -31,7 +31,7 @@ def generate_prescription(request):
         return Response({"error": "doctor_id and symptoms are required"}, status=400)
     
 
-    tokenizer, model = get_model_for_doctor(doctor_id)
+    (tokenizer, model) = get_model_for_doctor(doctor_id)
     
     if not model or not tokenizer:
         

@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token # <-- NEW
+from django.conf import settings
+from django.conf.urls.static import static
+import os
 
 urlpatterns = [
     path('api/', include('api.urls')),
@@ -27,6 +30,9 @@ urlpatterns = [
     path("", include('admin_black.urls')),
     
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=os.path.join(settings.BASE_DIR, "static"))
 
 # Lazy-load on routing is needed
 # During the first build, API is not yet generated

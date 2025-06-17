@@ -1,5 +1,6 @@
 import torch
 
+from . import ModelToolKit
 '''
 -each doctor will have their own model, so save model weights locally
 -fine tune on new diagnosis and symptoms

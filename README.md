@@ -100,6 +100,6 @@ stack - python flask or django
 
 ### Back End - MITHUN BHARATH
 
-## Text to Speech - RISHAB JOHARY
+## Speech to Text - RISHAB JOHARY
 
 ## AI and TEAM Lead- TOM MATHEW

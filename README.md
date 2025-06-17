@@ -23,30 +23,37 @@ An advanced, interactive medical dashboard built with **Django** and styled usin
 
 - Python 3.8+
 - pip
+- check your pip and python version are matching
 - Virtualenv (recommended)
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/intelligent-prescription-dashboard.git
-cd intelligent-prescription-dashboard
+git clone https://github.com/Epicalegendaire/June-Cohort-NIT-Rourkela.git
+cd CleanCodeApp
 
-# Create virtual environment
+# Create virtual environment(recommended)
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 
+# Install custom admin_black package
+python install_custom_admin_black.py
+
 # Apply migrations
 python manage.py migrate
 
-# Create superuser for admin access
+# Create superuser for admin access(optional)
 python manage.py createsuperuser
 
 # Run the development server
 python manage.py runserver
+
+#if port is used, try a different port
+python manage.py runserver 8001
 ```
 
 Then visit: http://127.0.0.1:8000/

@@ -12,10 +12,10 @@
       <p>Today's Appointments</p>
     </a>
   </li>   
-  <li class="{% if 'patients' in segment %} active {% endif %}">
-    <a href="{% url 'patients' %}">
+  <li class="{% if 'prescribe' in segment %} active {% endif %}">
+    <a href="{% url 'prescribe' %}">
       <i class="tim-icons icon-satisfied"></i>
-      <p>Patients</p>
+      <p>Prescribe</p>
     </a>
   </li>    
   <li class="{% if 'Lab Results' in segment %} active {% endif %}">

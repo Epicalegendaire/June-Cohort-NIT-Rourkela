@@ -10,6 +10,10 @@ def index(request):
     # Page from the theme 
     return render(request, 'pages/dashboard.html')
 
+def prescribe_view(request):
+    
+    return render(request, 'pages/prescribe.html')
+
 def patients_view(request):
     context = {
         'segment': 'patients',

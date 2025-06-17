@@ -89,7 +89,7 @@ This project builds on the [Black Dashboard by Creative Tim](https://www.creativ
 ## 🤝 Credits
 
 - [Creative Tim](https://www.creative-tim.com/) – UI Design
-- [OpenAI / Hugging Face / Custom LLMs] – Language Model Integration
+- [Hugging Face / Custom LLMs] – Language Model Integration
 - [Django](https://www.djangoproject.com/) – Backend Framework
 
 ## WEBSITE

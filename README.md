@@ -63,23 +63,6 @@ Then visit: http://127.0.0.1:8000/
 
 ---
 
-## 📁 Project Structure
-
-```
-├── apps/
-│   ├── api/                  # API endpoints and LLM logic
-│   ├── pages/                # Dashboard views and UI templates
-├── templates/
-│   └── layouts/              # Reusable base templates
-├── static/
-│   └── assets/               # JS, CSS, fonts, and dashboard assets
-├── manage.py
-├── requirements.txt
-└── README.md
-```
-
----
-
 ## ✨ Live Features Demonstration
 
 - **Dynamic symptom input form**
@@ -89,13 +72,6 @@ Then visit: http://127.0.0.1:8000/
 
 ---
 
-## 🔄 Customization Tips
-
-- Update `views.py` in `apps/api/` to swap or extend LLM logic.
-- Edit `dashboard.html` to change UI layout and fields.
-- Add logging or model storage for audit and compliance.
-
----
 
 ## 📄 License
 
@@ -119,4 +95,4 @@ stack - python flask or django
 
 ## Text to Speech - RISHAB JOHARY
 
-## AI / CHATBOT - TOM MATHEW
+## AI and TEAM Lead- TOM MATHEW

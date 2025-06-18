@@ -5,17 +5,19 @@
 
 {% block content %}
 <div class="content">
-    <div class="row">
-      {% if request.user.is_authenticated %}
+  <div class="row">
+    {% if request.user.is_authenticated %}
     <input type="hidden" id="doctor_id" name="doctor_id" value="{{ request.user.id }}">
-  {% else %}
+    {% else %}
     <p style="color:red;">User is not logged in. Doctor ID not available.</p>
-  {% endif %}
-<p>Logged-in doctor ID: {{ request.user.id }}</p>
-    </div>
-    <div class="row">
+    {% endif %}
+    <p>Logged-in doctor ID: {{ request.user.id }}</p>
+  </div>
+
+  <!-- Symptoms and AI Recommendation -->
+  <div class="row">
     <!-- Symptoms Card -->
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Symptoms</h4>
@@ -27,104 +29,128 @@
               <label for="symptoms">Enter symptoms:</label>
               <textarea class="form-control" id="symptoms" name="symptoms" rows="4" placeholder="e.g. cough, fever, headache" required></textarea>
             </div>
-
-            <!-- Hidden Doctor ID -->
             <input type="hidden" id="doctor_id" name="doctor_id" value="{{ request.user.id }}">
-
-            <button type="submit" class="btn btn-primary">Generate Prescription</button>
+            <button type="submit" class="btn btn-primary">Generate Recommendation</button>
           </form>
         </div>
       </div>
     </div>
 
-    <!-- Prescription Card -->
-    <div class="col-md-6">
+    <!-- Recommended (AI-generated) Card -->
+    <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Prescription</h4>
+          <h4 class="card-title">Recommended</h4>
         </div>
         <div class="card-body">
           <div class="form-group">
-            <label for="prescription">Suggested prescription:</label>
+            <label for="prescription">AI-Suggested Prescription:</label>
             <textarea class="form-control" id="prescription" name="prescription" rows="6" readonly>Prescription will appear here after submission.</textarea>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
+  <!-- Manual Prescription Entry -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Prescription</h4>
+        </div>
+        <div class="card-body">
+          <form id="manual-prescription-form">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="manual_prescription">Doctor's Prescription:</label>
+              <textarea class="form-control" id="manual_prescription" name="manual_prescription" rows="6" placeholder="Write your own prescription here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Send Prescription</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- AJAX Script -->
+<!-- Script: AI-generated Prescription -->
 <script>
 document.getElementById("prescription-form").addEventListener("submit", async function (e) {
-    e.preventDefault();  // prevent form reload
+  e.preventDefault();
 
-    const symptoms = document.getElementById("symptoms").value;
-    const doctorId = document.getElementById("doctor_id").value;
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const prescriptionBox = document.getElementById("prescription");
+  const symptoms = document.getElementById("symptoms").value;
+  const doctorId = document.getElementById("doctor_id").value;
+  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  const prescriptionBox = document.getElementById("prescription");
 
-    prescriptionBox.value = "Loading...";
+  prescriptionBox.value = "Loading...";
 
-    try {
-        const response = await fetch("{% url 'generate_prescription' %}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken
-            },
-            body: JSON.stringify({
-                symptoms: symptoms,
-                doctor_id: doctorId
-            })
-        });
+  try {
+    const response = await fetch("{% url 'generate_prescription' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken
+      },
+      body: JSON.stringify({
+        symptoms: symptoms,
+        doctor_id: doctorId
+      })
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (response.ok && data.prescription) {
-            prescriptionBox.value = data.prescription;
-        } else {
-            prescriptionBox.value = "Error: " + (data.error || "Unexpected error");
-        }
-
-    } catch (error) {
-        prescriptionBox.value = "Error: Unable to connect to the server.";
+    if (response.ok && data.prescription) {
+      prescriptionBox.value = data.prescription;
+    } else {
+      prescriptionBox.value = "Error: " + (data.error || "Unexpected error");
     }
+
+  } catch (error) {
+    prescriptionBox.value = "Error: Unable to connect to the server.";
+  }
 });
 </script>
 
+<!-- Script: Manual Prescription Submit (optional logic placeholder) -->
+<script>
+document.getElementById("manual-prescription-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const manualPrescription = document.getElementById("manual_prescription").value;
+  alert("Prescription submitted:\n\n" + manualPrescription);
+  // TODO: send this via fetch if needed to a backend URL
+});
+</script>
+
+<!-- Script: Load Model on Page Load -->
 <script>
 window.addEventListener("DOMContentLoaded", async () => {
-    const doctorId = document.getElementById("doctor_id").value;
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  const doctorId = document.getElementById("doctor_id").value;
+  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Notify loading
-    
-    showNotification('bottom','right',"⏳ Loading model for doctor...",'primary');
-    try {
-        const response = await fetch("{% url 'load_model' %}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken
-            },
-            body: JSON.stringify({ doctor_id: doctorId })
-        });
+  showNotification('bottom', 'right', "⏳ Loading model for doctor...", 'primary');
 
-        const data = await response.json();
+  try {
+    const response = await fetch("{% url 'load_model' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken
+      },
+      body: JSON.stringify({ doctor_id: doctorId })
+    });
 
-        if (response.ok) {
-            showNotification('bottom','right',data.message, 'primary');
-            
-        } else {
-            
-            showNotification('bottom','right', (data.error || "Failed to load model"), 'warning');
-        }
-    } catch (error) {
-        
-        showNotification('bottom','right', "Error loading model: " + error.message, 'danger');
+    const data = await response.json();
+
+    if (response.ok) {
+      showNotification('bottom', 'right', data.message, 'primary');
+    } else {
+      showNotification('bottom', 'right', (data.error || "Failed to load model"), 'warning');
     }
+  } catch (error) {
+    showNotification('bottom', 'right', "Error loading model: " + error.message, 'danger');
+  }
 });
 </script>
 {% endblock content %}

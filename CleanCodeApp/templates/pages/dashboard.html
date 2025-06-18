@@ -155,7 +155,9 @@ document.getElementById("manual-prescription-form").addEventListener("submit", a
 window.addEventListener("DOMContentLoaded", async () => {
   const doctorId = document.getElementById("doctor_id").value;
   const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+  const generateBtn = document.getElementById("generate-btn");  
+  generateBtn.disabled = true;
+  generateBtn.innerText = "Loading Model...";
   showNotification('bottom', 'right', "⏳ Loading model for doctor...", 'primary');
 
 
@@ -173,14 +175,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       showNotification('bottom', 'right', data.message, 'primary');
-
+      generateBtn.disabled = false;
+      generateBtn.innerText = "Generate Recommendation";
     } else {
       showNotification('bottom', 'right', (data.error || "Failed to load model"), 'warning');
-
+      generateBtn.innerText = "Model Failed to Load";
     }
   } catch (error) {
     showNotification('bottom', 'right', "Error loading model: " + error.message, 'danger');
-
+    generateBtn.innerText = "Model Failed to Load";
   }
 });
 </script>

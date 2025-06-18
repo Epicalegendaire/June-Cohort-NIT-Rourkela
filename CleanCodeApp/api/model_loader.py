@@ -8,16 +8,18 @@ def load_doctor_model(doctor_id):
     """
     Load model/tokenizer for the given doctor ID.
     """
-    load = LoadModel(doctor_id)
-    (tokenizer,model) = load.load()
-    if tokenizer is not None and model is not None:
-        print("Model and tokenizer loaded successfully.")
-        model_registry[doctor_id] = (tokenizer,model)
-    else:
-        print("Error: Model or tokenizer is None, generating a model..")
-        gen = GenerateModel()
-        gen.generate(doctor_id)
-        load_doctor_model(doctor_id)
+    if doctor_id not in model_registry.keys():
+
+        load = LoadModel(doctor_id)
+        (tokenizer,model) = load.load()
+        if tokenizer is not None and model is not None:
+            print("Model and tokenizer loaded successfully.")
+            model_registry[doctor_id] = (tokenizer,model)
+        else:
+            print("Error: Model or tokenizer is None, generating a model..")
+            gen = GenerateModel()
+            gen.generate(doctor_id)
+            load_doctor_model(doctor_id)
     
     
     return f"Personalied Model loaded for doctor {doctor_id}"

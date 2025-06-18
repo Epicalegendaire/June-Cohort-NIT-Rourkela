@@ -46,6 +46,7 @@ def generate_prescription(request):
     
     try:
         result = Infer(tokenizer, model).generate_medical_response(query)
+        result = result.replace(query, "").strip()
         
     except Exception as e:
         return Response({"error": f"Inference failed: {str(e)}"}, status=500)

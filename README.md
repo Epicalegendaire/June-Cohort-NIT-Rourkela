@@ -66,12 +66,6 @@ Click below to run the project in Google Colab:
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Epicalegendaire/June-Cohort-NIT-Rourkela/blob/c9a69e33cc3a4b797a6be6aac371e451073d41a1/CleanCodeapp.ipynb)
 ---
 
-## 🎥 Demo Video
-
-[![Watch the demo](https://img.youtube.com/vi/jtHfpC2fSkw/0.jpg)](https://www.youtube.com/watch?v=jtHfpC2fSkw)
-
----
-
 ## 🧠 How It Works
 
 1. Log in through Authenticate portal, then register as a doctor.
@@ -91,9 +85,13 @@ Click below to run the project in Google Colab:
 - **Support for doctor-specific models**
 <img width="1440" alt="image" src="https://github.com/user-attachments/assets/f7b2e787-17db-41b6-a1fd-392a18df6df5" />
 <img width="1440" alt="image" src="https://github.com/user-attachments/assets/dc0b9ed7-6e25-47bd-b92a-2d3c6adf7eec" />
-
 ---
 
+## 🎥 Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/jtHfpC2fSkw/0.jpg)](https://www.youtube.com/watch?v=jtHfpC2fSkw)
+
+---
 
 ## 📄 License
 

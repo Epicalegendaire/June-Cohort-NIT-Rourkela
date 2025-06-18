@@ -1,4 +1,5 @@
-# Ignore macOS metadata
+# Ignore macOS and git metadata
+.gitignore
 .DS_Store
 # Byte-compiled / optimized / DLL files
 __pycache__/

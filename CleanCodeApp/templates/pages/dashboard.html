@@ -30,7 +30,7 @@
               <textarea class="form-control" id="symptoms" name="symptoms" rows="4" placeholder="e.g. cough, fever, headache" required></textarea>
             </div>
             <input type="hidden" id="doctor_id" name="doctor_id" value="{{ request.user.id }}">
-            <button type="submit" class="btn btn-primary">Generate Recommendation</button>
+            <button type="submit" class="btn btn-primary" id="generate-btn">Generate Recommendation</button>
           </form>
         </div>
       </div>
@@ -114,14 +114,41 @@ document.getElementById("prescription-form").addEventListener("submit", async fu
 </script>
 
 <!-- Script: Manual Prescription Submit (optional logic placeholder) -->
+
 <script>
-document.getElementById("manual-prescription-form").addEventListener("submit", function (e) {
+document.getElementById("manual-prescription-form").addEventListener("submit", async function (e) {
   e.preventDefault();
+  
   const manualPrescription = document.getElementById("manual_prescription").value;
-  alert("Prescription submitted:\n\n" + manualPrescription);
-  // TODO: send this via fetch if needed to a backend URL
+  const doctorId = document.getElementById("doctor_id").value;
+  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+  try {
+    const response = await fetch("{% url 'update_preferences' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken  // Remove if you're using @csrf_exempt
+      },
+      body: JSON.stringify({
+        doctor_id: doctorId,
+        prescription: manualPrescription
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      showNotification('bottom', 'right', data.message, 'success');
+    } else {
+      showNotification('bottom', 'right', data.error || 'Failed to submit.', 'danger');
+    }
+  } catch (err) {
+    showNotification('bottom', 'right', "Error: " + err.message, 'danger');
+  }
 });
 </script>
+
 
 <!-- Script: Load Model on Page Load -->
 <script>
@@ -130,6 +157,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
   showNotification('bottom', 'right', "⏳ Loading model for doctor...", 'primary');
+
 
   try {
     const response = await fetch("{% url 'load_model' %}", {
@@ -145,11 +173,14 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     if (response.ok) {
       showNotification('bottom', 'right', data.message, 'primary');
+
     } else {
       showNotification('bottom', 'right', (data.error || "Failed to load model"), 'warning');
+
     }
   } catch (error) {
     showNotification('bottom', 'right', "Error loading model: " + error.message, 'danger');
+
   }
 });
 </script>

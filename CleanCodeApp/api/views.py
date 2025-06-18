@@ -2,7 +2,9 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .model_loader import load_doctor_model, get_model_for_doctor
-
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
 from PrescriptionAI.Inference import Infer
 from django.shortcuts import render
 
@@ -52,3 +54,19 @@ def generate_prescription(request):
     
     return Response({"prescription": result})
 
+
+@api_view(["POST"])
+def update_preferences(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            doctor_id = data.get("doctor_id")
+            prescription = data.get("prescription")
+
+            
+            print(f"Doctor {doctor_id} wrote: {prescription}")
+
+            return JsonResponse({"message": "Prescription saved for fine-tuning."})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+    return JsonResponse({"error": "Invalid method"}, status=405)

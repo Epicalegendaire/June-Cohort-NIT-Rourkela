@@ -58,6 +58,12 @@ python manage.py runserver 8001
 
 Then visit: http://127.0.0.1:8000/
 
+
+## 🚀 Quick Start in Google Colab
+
+Click below to run the project in Google Colab:
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/Epicalegendaire/June-Cohort-NIT-Rourkela/blob/c9a69e33cc3a4b797a6be6aac371e451073d41a1/CleanCodeapp.ipynb)
 ---
 
 ## 🧠 How It Works

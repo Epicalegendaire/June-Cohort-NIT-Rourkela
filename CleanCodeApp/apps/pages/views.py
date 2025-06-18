@@ -1,10 +1,11 @@
 from django.http import HttpResponse
 from apps.pages.models import Appointment, Patient
-# Create your views here.
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='/accounts/auth-signin/')
 def index(request):
 
     # Page from the theme 

@@ -59,7 +59,7 @@ python manage.py runserver 8001
 Then visit: http://127.0.0.1:8000/
 
 
-##:test_tube:Quick Start in Google Colab
+## 🧪 Quick Start in Google Colab
 
 Click below to run the project in Google Colab:
 
